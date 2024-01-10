@@ -1,7 +1,9 @@
 package com.example.again
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -11,6 +13,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     val REQUEST_FOR_NICKNAME=1005
+    @SuppressLint("SuspiciousIndentation")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -35,7 +38,35 @@ class MainActivity : AppCompatActivity() {
             val myIntent = Intent(this, EditNicknameActivity::class.java)
             startActivityForResult(myIntent,REQUEST_FOR_NICKNAME)
 
+        }
+        binding.dialBtn.setOnClickListener{
+            //phoneNumEdt에 입력한 전화번호를 받아서=>해당 번호에 전화연결
 
+            val inputPhoneNum = binding.phoneNumEdt.text.toString()
+            val myURI = Uri.parse("tel:${inputPhoneNum}")
+            val myIntent = Intent(Intent.ACTION_DIAL, myURI)
+            startActivity(myIntent)
+        }
+
+        binding.msgBtn.setOnClickListener{
+            val inputPhoneNum = binding.phoneNumEdt.text.toString()
+            val smsContent = binding.smsContent.text.toString()
+            val myURI = Uri.parse("smsto:${inputPhoneNum}")
+            val myIntent = Intent(Intent.ACTION_SENDTO, myURI)
+            myIntent.putExtra("sms_body", smsContent)
+            startActivity(myIntent)
+
+        }
+        binding.naverWebBtn.setOnClickListener{
+            val myURI = Uri.parse("https://naver.com")
+            val myIntent = Intent(Intent.ACTION_VIEW, myURI)
+            startActivity(myIntent)
+        }
+        binding.kakaoStoreBtn.setOnClickListener{
+
+            val myURI = Uri.parse("market://details?id=com.kakao.talk")
+            val myIntent = Intent(Intent.ACTION_VIEW, myURI)
+            startActivity(myIntent)
         }
     }
 //오버라이딩
@@ -52,4 +83,6 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
+
+    //Dial 액션 예
 }
